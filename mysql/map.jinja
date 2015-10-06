@@ -1,0 +1,28 @@
+
+{%- set mysql_version = pillar.mysql.server.get('version', '6.0') %}
+
+{%- set server = salt['grains.filter_by']({
+    'Debian': {
+        'pkgs': ['mysql-server-'+mysql_version, 'python-mysqldb'],
+        'service': 'mysql',
+        'config': '/etc/mysql/my.cnf',
+        'maintenance_password': '5Pg91H1flC4HSVns',
+        'replication': {
+           'role': 'none',
+        },
+        'ssl': {
+          'enabled': False
+        }
+    },
+    'RedHat': {
+        'pkgs': ['mysql-server', 'MySQL-python'],
+        'service': 'mysqld',
+        'config': '/etc/my.cnf',
+        'replication': {
+           'role': 'none',
+        },
+        'ssl': {
+          'enabled': False
+        }
+    },
+}, merge=salt['pillar.get']('mysql:server')) %}

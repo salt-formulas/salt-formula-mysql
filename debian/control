@@ -1,0 +1,15 @@
+Source: salt-formula-mysql
+Maintainer: Jakub Pavlik <jakub.pavlik@tcpcloud.eu>
+Section: admin
+Priority: optional
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.6
+Homepage: http://www.tcpcloud.eu
+Vcs-Browser: https://github.com/tcpcloud/salt-formula-mysql
+Vcs-Git: https://github.com/tcpcloud/salt-formula-mysql.git
+
+Package: salt-formula-mysql
+Architecture: all
+Depends: ${misc:Depends}, salt-master, reclass
+Description: MySQL Salt formula
+ Install and configure MySQL server and client.
