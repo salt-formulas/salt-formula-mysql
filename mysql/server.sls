@@ -8,13 +8,21 @@ include:
 
 /etc/mysql/server-cert.pem:
   file.managed:
+  {%- if server.ssl.cert is defined %}
+  - contents_pillar: mysql:server:ssl:cert
+  {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.certificate }}.cert.pem
+  {%- endif %}
   - require:
     - pkg: mysql_packages
 
 /etc/mysql/server-key.pem:
   file.managed:
+  {%- if server.ssl.cert is defined %}
+  - contents_pillar: mysql:server:ssl:key
+  {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.certificate }}.key.pem
+  {%- endif %}
   - require:
     - pkg: mysql_packages
 
@@ -22,13 +30,21 @@ include:
 
 /etc/mysql/client-cert.pem:
   file.managed:
+  {%- if server.ssl.client_cert is defined %}
+  - contents_pillar: mysql:server:ssl:client_cert
+  {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.client_certificate }}.cert.pem
+  {%- endif %}
   - require:
     - pkg: mysql_packages
 
 /etc/mysql/client-key.pem:
   file.managed:
+  {%- if server.ssl.client_key is defined %}
+  - contents_pillar: mysql:server:ssl:client_key
+  {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.client_certificate }}.key.pem
+  {%- endif %}
   - require:
     - pkg: mysql_packages
 
@@ -36,7 +52,11 @@ include:
 
 /etc/mysql/cacert.pem:
   file.managed:
+  {%- if server.ssl.cacert is defined %}
+  - contents_pillar: mysql:server:ssl:cacert
+  {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/{{ server.ssl.authority }}-chain.cert.pem
+  {%- endif %}
   - require:
     - pkg: mysql_packages
 
