@@ -100,16 +100,26 @@ long_query_time = 2
 # The following can be used as easy to replay backup logs or for replication.
 # note: if you are setting up a replication slave, see README.Debian about
 #       other settings you may need to change.
-{%- if server.replication.role in ['slave','master', 'both'] %}
+{%- if server.replication.role in ['slave', 'master', 'both'] %}
+
 server-id               = {{ server.server_id }}
 log_bin                 = /var/log/mysql/mysql-bin.log
 expire_logs_days        = 10
+
+{%- if server.replication.role in ['both'] %}
+{%- if server.replication.auto_increment is defined %}
+auto_increment_increment = {{ server.replication.auto_increment.increment }}
+auto_increment_offset    = {{ server.replication.auto_increment.offset }}
+{%- endif %}
+{%- endif %}
+
 {%- if server.replication.role in ['slave'] %}
 relay-log               = /var/log/mysql/mysql-relay-bin.log
 {%- for database_name, database in server.get('database', {}).iteritems() %}
 binlog_do_db           = {{ database_name }}
 {%- endfor %}
 {%- endif %}
+
 {%- endif %}
 max_binlog_size         = 100M
 #binlog_ignore_db       = include_database_name
