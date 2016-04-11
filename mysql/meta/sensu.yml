@@ -5,9 +5,12 @@ check:
     occurrences: 1
     subscribers:
     - local-mysql-server
+
+  {%- if pillar.galera is defined %}
   local_mysql_galera_status:
     command: "PATH=$PATH:/etc/sensu/plugins check_galera_cluster -u :::mysql.user::: -p :::mysql.password::: -H localhost -P :::mysql.port::: -c 2"
     interval: 60
     occurrences: 1
     subscribers:
     - local-mysql-cluster
+  {%- endif %}
