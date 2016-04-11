@@ -11,3 +11,5 @@ parameters:
         enabled: false
       backupninja:
         enabled: true
+      iptables:
+        enabled: true

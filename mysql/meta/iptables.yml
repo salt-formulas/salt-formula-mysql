@@ -1,0 +1,11 @@
+{%- from "mysql/map.jinja" import server with context -%}
+
+iptables:
+  rules:
+    - destination_port: {{ server.bind.port }}
+      protocol: tcp
+      jump: ACCEPT
+
+{#-
+vim: syntax=jinja
+-#}
