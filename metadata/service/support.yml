@@ -1,5 +1,5 @@
 parameters:
-  haproxy:
+  mysql:
     _support:
       collectd:
         enabled: false
