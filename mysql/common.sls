@@ -13,6 +13,13 @@ mariadb_debconf:
 
 {%- endif %}
 
+mysql_salt_config:
+  file.managed:
+    - name: /etc/salt/minion.d/mysql.conf
+    - template: jinja
+    - source: salt://mysql/files/salt-minion.conf
+    - mode: 600
+
 mysql_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
@@ -25,17 +32,34 @@ mysql_config:
   - source: salt://mysql/conf/my.cnf.{{ grains.os_family }}
   - mode: 644
   - template: jinja
-  - require: 
+  - require:
     - pkg: mysql_packages
-  - watch_in:
-    - service: mysql_service
 
 {%- endif %}
 
+
+{%- if not grains.get('noservices', False) %}
 mysql_service:
   service.running:
   - name: {{ server.service }}
   - enable: true
+  {%- if server.version != '5.6' %}
+  - watch:
+    - file: mysql_config
+  {%- endif %}
+  - require:
+    - file: mysql_salt_config
+{%- endif %}
+
+
+{%- if grains.get('virtual_subtype', None) == "Docker" %}
+mysql_entrypoint:
+  file.managed:
+  - name: /entrypoint.sh
+  - template: jinja
+  - source: salt://mysql/files/entrypoint.sh
+  - mode: 755
+{%- endif %}
 
 mysql_config_dir:
   file.directory:
@@ -53,7 +77,7 @@ mysql_dirs:
   - user: root
   - group: root
   - makedirs: true
-  - require: 
+  - require:
     - pkg: mysql_packages
 
 /root/mysql/flags:
@@ -62,7 +86,7 @@ mysql_dirs:
   - user: root
   - group: root
   - makedirs: true
-  - require: 
+  - require:
     - pkg: mysql_packages
 
 
@@ -124,7 +148,7 @@ mysql_automysqlbackup_conf:
   - source: salt://mysql/conf/automysqlbackup.conf
   - mode: 644
   - template: jinja
-  - require: 
+  - require:
     - file: mysql_backup_dirs
 
 mysql_automysqlbackup_script:
@@ -132,7 +156,7 @@ mysql_automysqlbackup_script:
   - name: /root/mysql/scripts/automysqlbackup
   - source: salt://mysql/conf/automysqlbackup
   - mode: 755
-  - require: 
+  - require:
     - file: mysql_backup_dirs
 
 mysql_automysqlbackup_cron:
@@ -141,7 +165,7 @@ mysql_automysqlbackup_cron:
   - source: salt://mysql/conf/automysqlbackup.cron
   - mode: 755
   - template: jinja
-  - require: 
+  - require:
     - file: mysql_backup_dirs
 
 {%- endif %}
