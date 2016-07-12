@@ -148,6 +148,27 @@ Galera initial server (master)
               host: 'localhost'
               rights: 'all privileges'
 
+Database management
+---------------------
+
+User, Database management on independent mysql server
+
+.. code-block:: yaml
+
+    mysql:
+      server:
+        admin:
+          user: root
+          password: pass
+        database:
+          name:
+            encoding: 'utf8'
+            users:
+            - name: 'username'
+              password: 'password'
+              host: 'localhost'
+              rights: 'all privileges'
+
 Usage
 =====
 

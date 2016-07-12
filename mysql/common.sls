@@ -13,13 +13,6 @@ mariadb_debconf:
 
 {%- endif %}
 
-mysql_salt_config:
-  file.managed:
-    - name: /etc/salt/minion.d/mysql.conf
-    - template: jinja
-    - source: salt://mysql/files/salt-minion.conf
-    - mode: 600
-
 mysql_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
