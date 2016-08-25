@@ -23,6 +23,8 @@ include:
   {%- endif %}
   - require:
     - pkg: mysql_packages
+  - watch_in:
+    - service: mysql_service
 
 /etc/mysql/server-key.pem:
   file.managed:
@@ -33,6 +35,8 @@ include:
   {%- endif %}
   - require:
     - pkg: mysql_packages
+  - watch_in:
+    - service: mysql_service
 
 {%- if server.replication.role in ['slave', 'both'] %}
 
@@ -45,6 +49,8 @@ include:
   {%- endif %}
   - require:
     - pkg: mysql_packages
+  - watch_in:
+    - service: mysql_service
 
 /etc/mysql/client-key.pem:
   file.managed:
@@ -55,6 +61,8 @@ include:
   {%- endif %}
   - require:
     - pkg: mysql_packages
+  - watch_in:
+    - service: mysql_service
 
 {%- endif %}
 
@@ -67,6 +75,8 @@ include:
   {%- endif %}
   - require:
     - pkg: mysql_packages
+  - watch_in:
+    - service: mysql_service
 
 {%- endif %}
 
@@ -77,6 +87,8 @@ include:
   mysql_user.present:
   - host: '%'
   - password: {{ server.replication.password }}
+  - watch_in:
+    - service: mysql_service
 
 {{ server.replication.user }}_replication_grants:
   mysql_grants.present:
@@ -84,6 +96,8 @@ include:
   - database: '*.*'
   - user: {{ server.replication.user }}
   - host: '%'
+  - watch_in:
+    - service: mysql_service
 
 {%- endif %}
 
