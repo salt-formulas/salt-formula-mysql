@@ -13,7 +13,7 @@
 
 {%- else %}
 
-{%- set setup_replication_query = "CHANGE MASTER TO MASTER_HOST='"+server.replication.master_address+"', MASTER_USER='"+server.replication.user+"', MASTER_PASSWORD='"+server.replication.password+"', MASTER_LOG_FILE='"+master_status.get('File', 'mysql-bin.000001')+"', MASTER_LOG_POS="+master_status.get('Position', '1')|string+";" %}
+{%- set setup_replication_query = "CHANGE MASTER TO MASTER_HOST='"+server.replication.master_address+"', MASTER_USER='"+server.replication.user+"', MASTER_PASSWORD='"+server.replication.password+"', MASTER_LOG_FILE='"+master_status.get('File', 'mysql-bin.000001')+"', MASTER_SSL=0, MASTER_LOG_POS="+master_status.get('Position', '1')|string+"; START SLAVE;" %}
 
 {%- endif %}
 
