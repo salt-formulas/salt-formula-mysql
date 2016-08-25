@@ -13,7 +13,11 @@ mysql_user_{{ user.name }}_{{ database_name }}_{{ user.host }}:
   mysql_user.present:
   - host: '{{ user.host }}'
   - name: '{{ user.name }}'
+  {%- if user.password is defined %}
   - password: {{ user.password }}
+  {%- else %}
+  - allow_passwordless: true
+  {%- endif %}
 
 mysql_grants_{{ user.name }}_{{ database_name }}_{{ user.host }}:
   mysql_grants.present:
