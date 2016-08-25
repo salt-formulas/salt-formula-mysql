@@ -66,13 +66,13 @@ character-set-server=utf8
 #
 # * Fine Tuning
 #
-key_buffer             = {{ mysql.get('key_buffer', '16') }}M
+key_buffer_size        = {{ mysql.get('key_buffer', '16') }}M
 max_allowed_packet     = {{ mysql.get('max_allowed_packet', '16') }}M
 thread_stack           = {{ mysql.get('thread_stack', '192') }}K
 thread_cache_size      = {{ mysql.get('thread_cache_size', '8') }}
 # This replaces the startup script and checks MyISAM tables if needed
 # the first time they are touched
-myisam-recover         = BACKUP
+myisam-recover-options = BACKUP
 max_connections        = {{ mysql.get('max_connections', '100') }}
 #table_cache           = 64
 #thread_concurrency    = 10
@@ -93,7 +93,8 @@ query_cache_size       = {{ mysql.get('query_cache_size', '16') }}M
 # Error logging goes to syslog due to /etc/mysql/conf.d/mysqld_safe_syslog.cnf.
 #
 # Here you can see queries with especially long duration
-log_slow_queries       = /var/log/mysql/mysql-slow.log
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/mysql-slow.log
 long_query_time = 2
 #log-queries-not-using-indexes
 #
@@ -153,7 +154,7 @@ max_allowed_packet      = 16M
 #no-auto-rehash # faster start of mysql but no tab completition
 
 [isamchk]
-key_buffer              = 16M
+key_buffer_size         = 16M
 
 #
 # * IMPORTANT: Additional settings that can override those from this file!
