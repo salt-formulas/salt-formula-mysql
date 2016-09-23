@@ -1,4 +1,4 @@
-{%- from "mysql/map.jinja" import server with context %}
+{%- from "mysql/map.jinja" import server, mysql_connection_args with context %}
 
 mysql_salt_config:
   file.managed:
@@ -87,6 +87,9 @@ include:
   mysql_user.present:
   - host: '%'
   - password: {{ server.replication.password }}
+  - connection_user: {{ mysql_connection_args.user }}
+  - connection_pass: {{ mysql_connection_args.password }}
+  - connection_charset: {{ mysql_connection_args.charset }}
   - watch_in:
     - service: mysql_service
 
@@ -96,6 +99,9 @@ include:
   - database: '*.*'
   - user: {{ server.replication.user }}
   - host: '%'
+  - connection_user: {{ mysql_connection_args.user }}
+  - connection_pass: {{ mysql_connection_args.password }}
+  - connection_charset: {{ mysql_connection_args.charset }}
   - watch_in:
     - service: mysql_service
 

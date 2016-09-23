@@ -1,4 +1,4 @@
-{%- from "mysql/map.jinja" import server with context %}
+{%- from "mysql/map.jinja" import server, mysql_connection_args with context %}
 
 {%- if not grains.get('noservices', False) %}
 {%- for database_name, database in server.get('database', {}).iteritems() %}
@@ -6,6 +6,9 @@
 mysql_database_{{ database_name }}:
   mysql_database.present:
   - name: {{ database_name }}
+  - connection_user: {{ mysql_connection_args.user }}
+  - connection_pass: {{ mysql_connection_args.password }}
+  - connection_charset: {{ mysql_connection_args.charset }}
 
 {%- for user in database.users %}
 
@@ -18,6 +21,9 @@ mysql_user_{{ user.name }}_{{ database_name }}_{{ user.host }}:
   {%- else %}
   - allow_passwordless: true
   {%- endif %}
+  - connection_user: {{ mysql_connection_args.user }}
+  - connection_pass: {{ mysql_connection_args.password }}
+  - connection_charset: {{ mysql_connection_args.charset }}
 
 mysql_grants_{{ user.name }}_{{ database_name }}_{{ user.host }}:
   mysql_grants.present:
@@ -25,6 +31,9 @@ mysql_grants_{{ user.name }}_{{ database_name }}_{{ user.host }}:
   - database: '{{ database_name }}.*'
   - user: '{{ user.name }}'
   - host: '{{ user.host }}'
+  - connection_user: {{ mysql_connection_args.user }}
+  - connection_pass: {{ mysql_connection_args.password }}
+  - connection_charset: {{ mysql_connection_args.charset }}
   - require:
     - mysql_user: mysql_user_{{ user.name }}_{{ database_name }}_{{ user.host }}
     - mysql_database: mysql_database_{{ database_name }}
