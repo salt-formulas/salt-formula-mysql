@@ -1,5 +1,5 @@
 
-{%- set mysql_version = pillar.mysql.server.get('version', '6.0') %}
+{%- set mysql_version = pillar.mysql.get('server', {}).get('version', '6.0') %}
 
 {%- set server = salt['grains.filter_by']({
     'Debian': {
@@ -26,6 +26,11 @@
         }
     },
 }, merge=salt['pillar.get']('mysql:server')) %}
+
+{%- set client = salt['grains.filter_by']({
+    'default': {
+    },
+}, merge=salt['pillar.get']('mysql:client')) %}
 
 {%- if server.admin is defined %}
 {%- set mysql_connection_args = {'user': server.admin.user,

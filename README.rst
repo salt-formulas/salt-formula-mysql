@@ -170,6 +170,57 @@ User, Database management on independent mysql server
               host: 'localhost'
               rights: 'all privileges'
 
+
+MySQL client role
+-----------------
+
+Database management on remote MySQL server
+
+.. code-block:: yaml
+
+    mysql:
+      client:
+        enabled: true
+        server:
+          server01:
+            admin:
+              host: database.host
+              port: 3306
+              user: root
+              password: password
+              encoding: utf8
+            database:
+              database01:
+                encoding: utf8
+                users:
+                - name: username
+                  password: 'password'
+                  host: 'localhost'
+                  rights: 'all privileges'
+
+User management on remote MySQL server
+
+.. code-block:: yaml
+
+    mysql:
+      client:
+        enabled: true
+        server:
+          server01:
+            admin:
+              host: database.host
+              port: 3306
+              user: root
+              password: password
+              encoding: utf8
+            users:
+            - name: user01
+              host: "*"
+              password: 'sdgdsgdsgd'
+            - name: user02
+              host: "localhost"
+
+
 Usage
 =====
 
