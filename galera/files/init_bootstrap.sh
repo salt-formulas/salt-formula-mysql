@@ -6,7 +6,7 @@ counter=60
 
 while [ $counter -gt 0 ]
 do
-  mysql -h {{ service.bind.address }} -u {{ service.admin.user }} -p{{ service.admin.password }} -e"quit"
+  mysql -h {{ service.bind.address }} -u root -e"quit"
   if [[ $? -eq 0 ]]; then
     exit 0
   fi
