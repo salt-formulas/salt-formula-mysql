@@ -1,15 +1,18 @@
 
-=====
-MySQL
-=====
+=============
+MySQL Formula
+=============
 
-MySQL is the world's second most widely used open-source relational database management system (RDBMS).
+MySQL is the world's second most widely used open-source relational database
+management system (RDBMS).
 
-Sample pillars
-==============
 
-Standalone servers
-------------------
+Sample Metadata
+===============
+
+
+Standalone setups
+-----------------
 
 Standalone MySQL server
 
@@ -33,6 +36,27 @@ Standalone MySQL server
               password: 'password'
               host: 'localhost'
               rights: 'all privileges'
+
+Database with initial data
+
+.. code-block:: yaml
+
+    mysql:
+      server:
+        enabled: true
+        database:
+          datatabese_with_init_data:
+            encoding: 'utf8'
+            users:
+            - name: 'username'
+              password: 'password'
+              host: 'localhost'
+              rights: 'all privileges'
+            initial_data:
+              engine: backupninja
+              source: backup.host
+              host: original-host-name
+              database: original-database-name
 
 MySQL replication master with SSL
 
@@ -110,10 +134,12 @@ Tuned up MySQL server
               host: 'localhost'
               rights: 'all privileges'
 
-MySQL galera cluster
+
+MySQL Galera cluster
 --------------------
 
-MySQL Galera cluster is configured for ring connection between 3 nodes. Each node should have just one member.
+MySQL Galera cluster is configured for ring connection between 3 nodes. Each
+node should have just one member.
 
 Galera initial server (master)
 
@@ -149,30 +175,8 @@ Galera initial server (master)
               host: 'localhost'
               rights: 'all privileges'
 
-Database management
----------------------
-
-User, Database management on independent mysql server
-
-.. code-block:: yaml
-
-    mysql:
-      server:
-        admin:
-          user: root
-          password: pass
-        database:
-          name:
-            encoding: 'utf8'
-            users:
-            - name: 'username'
-              password: 'password'
-              host: 'localhost'
-              rights: 'all privileges'
-
-
-MySQL client role
------------------
+MySQL client
+------------
 
 Database management on remote MySQL server
 
@@ -221,8 +225,8 @@ User management on remote MySQL server
               host: "localhost"
 
 
-Usage
-=====
+Sample Usage
+============
 
 MySQL Galera check sripts
 
@@ -302,27 +306,16 @@ Galera monitoring command, performed from extra server
 
     mysql> SET GLOBAL wsrep_cluster_address='gcomm://10.0.0.2';
 
-Read more
-=========
+More Information
+================
 
 * http://dev.mysql.com/doc/
 * http://www.slideshare.net/osscube/mysql-performance-tuning-top-10-tips
 
-Galera replication
-------------------
-
-* https://github.com/CaptTofu/ansible-galera
-* http://www.sebastien-han.fr/blog/2012/04/15/active-passive-failover-cluster-on-a-mysql-galera-cluster-with-haproxy-lsb-agent/
-* http://opentodo.net/2012/12/mysql-multi-master-replication-with-galera/
-* http://www.codership.com/wiki/doku.php
-* Best one: - http://www.sebastien-han.fr/blog/2012/04/01/mysql-multi-master-replication-with-galera/
-
-Mysql Backup
-------------
-
 * http://sourceforge.net/projects/automysqlbackup/
 * https://labs.riseup.net/code/projects/backupninja/wiki
 * http://wiki.zmanda.com/index.php/Mysql-zrm
+
 
 Documentation and Bugs
 ======================
