@@ -56,6 +56,29 @@ mysql_{{ server_name }}_grants_{{ database_name }}_{{ user.name }}_{{ user.host 
 
 {%- endfor %}
 
+{%- if database.initial_data is defined %}
+
+/root/mysql/scripts/restore_{{ database_name }}.sh:
+  file.managed:
+  - source: salt://mysql/conf/restore.sh
+  - mode: 770
+  - template: jinja
+  - defaults:
+    database_name: {{ database_name }}
+    database: {{ database }}
+  - require:
+    - mysql_database: mysql_{{ server_name }}_database_{{ database_name }}
+
+restore_mysql_database_{{ database_name }}:
+  cmd.run:
+  - name: /root/mysql/scripts/restore_{{ database_name }}.sh
+  - unless: "[ -f /root/mysql/flags/{{ database_name }}-installed ]"
+  - cwd: /root
+  - require:
+    - file: /root/mysql/scripts/restore_{{ database_name }}.sh
+
+{%- endif %}
+
 {%- endfor %}
 
 {%- for user in server.get('users', []) %}

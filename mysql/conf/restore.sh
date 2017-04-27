@@ -1,22 +1,24 @@
 #!/bin/sh
 
-cd /root/mysql
-
-{%- for database in pillar.mysql.server.databases %}
-{%- if database.name == database_name %}
-
 {%- set age = database.initial_data.get("age", "0") %}
 {%- set host = database.initial_data.get("host", grains.id ) %}
-{%- set name = database.initial_data.get("database", database.name) %}
+{%- set name = database.initial_data.get("database", '') %}
 {%- set source_name = name + ".sql.gz" %}
-{%- set dest_name = database.name + ".sql.gz" %}
-{%- set target = "/root/mysql/data/" %}
+{%- set dest_name = database_name + ".sql.gz" %}
+{%- set path = "/var/backups/mysql/" %}
 
-scp backupninja@{{ database.initial_data.source }}:/srv/backupninja/{{ host }}/var/backups/mysql/mysql.{{ age }}/sqldump/{{ source_name }} {{ target }}{{ dest_name }}
+{%- if database.initial_data.source != 'localhost' %}
 
-gunzip -c {{ target }}{{ dest_name }} | mysql -h 127.0.0.1 -u {{ database.users[0].name }} -p{{ database.users[0].password }} {{ database.name }}
+scp backupninja@{{ database.initial_data.source }}:/srv/backupninja/{{ host }}{{ path }}mysql.{{ age }}/sqldump/{{ source_name }} /root/mysql/data/{{ source_name }}
 
-touch /root/mysql/flags/{{ database.name }}-installed
+gunzip -c /root/mysql/data/{{ source_name }} | mysql -u{{ database.users[0].name }} -p{{ database.users[0].password }} {{ database_name }}
+
+touch /root/mysql/flags/{{ database_name }}-installed
+
+{%- else %}
+
+gunzip -c {{ path }}sqldump/{{ source_name }} | mysql -u{{ database.users[0].name }} -p{{ database.users[0].password }} {{ database_name }}
+
+touch /root/mysql/flags/{{ database_name }}-installed
 
 {%- endif %}
-{%- endfor %} 

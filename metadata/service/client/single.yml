@@ -1,0 +1,8 @@
+classes:
+- service.mysql.support
+applications:
+- mysql
+parameters:
+  mysql:
+    client:
+      enabled: true

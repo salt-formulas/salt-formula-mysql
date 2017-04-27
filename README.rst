@@ -37,26 +37,6 @@ Standalone MySQL server
               host: 'localhost'
               rights: 'all privileges'
 
-Database with initial data
-
-.. code-block:: yaml
-
-    mysql:
-      server:
-        enabled: true
-        database:
-          datatabese_with_init_data:
-            encoding: 'utf8'
-            users:
-            - name: 'username'
-              password: 'password'
-              host: 'localhost'
-              rights: 'all privileges'
-            initial_data:
-              engine: backupninja
-              source: backup.host
-              host: original-host-name
-              database: original-database-name
 
 MySQL replication master with SSL
 
@@ -178,6 +158,42 @@ Galera initial server (master)
 MySQL client
 ------------
 
+Database with initial data (Restore DB)
+
+.. code-block:: yaml
+
+    mysql:
+      client:
+        server:
+          database:
+            admin:
+              host: localhost
+              port: 3306
+              user: ${_param:mysql_admin_user}
+              password: ${_param:mysql_admin_password}
+              encoding: utf8
+            database:
+              neutron_upgrade:
+                encoding: utf8
+                users:
+                - name: neutron
+                  password: ${_param:mysql_neutron_password}
+                  host: '%'
+                  rights: all
+                - name: neutron
+                  password: ${_param:mysql_neutron_password}
+                  host: ${_param:single_address}
+                  rights: all
+                initial_data:
+                  engine: backupninja
+                  source: ${_param:backupninja_backup_host}
+                  host: ${linux:network:fqdn}
+                  database: neutron
+
+.. note:: This client role needs to be put directly on dbs node. 
+          The provided setup restores db named neutron_upgrade with data from db called neutron.
+
+
 Database management on remote MySQL server
 
 .. code-block:: yaml
@@ -201,6 +217,7 @@ Database management on remote MySQL server
                   password: 'password'
                   host: 'localhost'
                   rights: 'all privileges'
+
 
 User management on remote MySQL server
 
