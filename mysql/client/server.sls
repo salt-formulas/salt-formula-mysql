@@ -11,6 +11,17 @@
                            'db': server.admin.get('database', 'mysql')
 } %}
 
+backup_mysql_dirs:
+  file.directory:
+  - names:
+    - /root/mysql/scripts
+    - /root/mysql/flags
+    - /root/mysql/data
+  - mode: 700
+  - user: root
+  - group: root
+  - makedirs: true
+
 {%- for database_name, database in server.get('database', {}).iteritems() %}
 
 mysql_{{ server_name }}_database_{{ database_name }}:
