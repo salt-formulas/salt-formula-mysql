@@ -1,12 +1,5 @@
 {%- from "mysql/map.jinja" import server, mysql_connection_args with context %}
 
-mysql_salt_config:
-  file.managed:
-    - name: /etc/salt/minion.d/mysql.conf
-    - template: jinja
-    - source: salt://mysql/files/salt-minion.conf
-    - mode: 600
-
 {%- if server.enabled %}
 
 include:
