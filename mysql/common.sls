@@ -40,8 +40,6 @@ mysql_service:
   - watch:
     - file: mysql_config
   {%- endif %}
-  - require:
-    - file: mysql_salt_config
 {%- endif %}
 
 
