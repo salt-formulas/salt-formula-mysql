@@ -6,6 +6,7 @@
 mysql_database_{{ database_name }}:
   mysql_database.present:
   - name: {{ database_name }}
+  - character_set: {{ database.get('encoding', 'utf8') }}
   - connection_user: {{ mysql_connection_args.user }}
   - connection_pass: {{ mysql_connection_args.password }}
   - connection_charset: {{ mysql_connection_args.charset }}
