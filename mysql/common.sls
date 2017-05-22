@@ -17,8 +17,6 @@ mysql_packages:
   pkg.installed:
   - names: {{ server.pkgs }}
 
-{%- if server.version != '5.6' %}
-
 mysql_config:
   file.managed:
   - name: {{ server.config }}
@@ -28,18 +26,13 @@ mysql_config:
   - require:
     - pkg: mysql_packages
 
-{%- endif %}
-
-
 {%- if not grains.get('noservices', False) %}
 mysql_service:
   service.running:
   - name: {{ server.service }}
   - enable: true
-  {%- if server.version != '5.6' %}
   - watch:
     - file: mysql_config
-  {%- endif %}
 {%- endif %}
 
 
