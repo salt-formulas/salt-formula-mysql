@@ -1,0 +1,70 @@
+---
+driver:
+  name: docker
+  hostname: mysql.ci.local
+  use_sudo: false
+
+provisioner:
+  name: salt_solo
+  salt_install: bootstrap
+  salt_bootstrap_url: https://bootstrap.saltstack.com
+  salt_version: latest
+  require_chef: false
+  log_level: error
+  formula: mysql
+  grains:
+    noservices: True
+  state_top:
+    base:
+      "*":
+        - mysql
+  pillars:
+    top.sls:
+      base:
+        "*":
+          - mysql
+          - mysqlver
+    mysqlver.sls:
+      mysql:
+        server:
+          enabled: true
+          version: "<%=ENV['MYSQL_VER'] || '5.7'%>"
+
+verifier:
+  name: inspec
+  sudo: true
+
+
+platforms:
+  - name: <%=ENV['PLATFORM'] || 'ubuntu-xenial'%>
+    driver_config:
+      image: <%=ENV['PLATFORM'] || 'trevorj/salty-whales:xenial'%>
+      platform: ubuntu
+
+suites:
+
+  - name: replication_both
+    provisioner:
+      pillars-from-files:
+        mysql.sls: tests/pillar/replication_both.sls
+
+  - name: replication_master
+    provisioner:
+      pillars-from-files:
+        mysql.sls: tests/pillar/replication_master.sls
+
+  - name: replication_slave
+    provisioner:
+      pillars-from-files:
+        mysql.sls: tests/pillar/replication_slave.sls
+
+  - name: server_client_database
+    provisioner:
+      pillars-from-files:
+        mysql.sls: tests/pillar/server_client_database.sls
+
+  - name: server_client_user
+    provisioner:
+      pillars-from-files:
+        mysql.sls: tests/pillar/server_client_user.sls
+# vim: ft=yaml sw=2 ts=2 sts=2 tw=125

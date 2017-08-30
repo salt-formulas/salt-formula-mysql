@@ -8,7 +8,7 @@ mariadb_debconf:
   - data:
       'mysql-server/root_password': {'type':'string','value':'{{ server.admin.password }}'}
       'mysql-server/root_password_again': {'type':'string','value':'{{ server.admin.password }}'}
-  - require_in:
+  - require:
     - pkg: mysql_packages
 
 {%- endif %}
@@ -26,15 +26,12 @@ mysql_config:
   - require:
     - pkg: mysql_packages
 
-{%- if not grains.get('noservices', False) %}
 mysql_service:
   service.running:
   - name: {{ server.service }}
   - enable: true
   - watch:
     - file: mysql_config
-{%- endif %}
-
 
 {%- if grains.get('virtual_subtype', None) == "Docker" %}
 mysql_entrypoint:

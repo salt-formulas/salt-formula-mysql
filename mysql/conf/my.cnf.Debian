@@ -144,7 +144,8 @@ max_binlog_size         = 100M
 #
 
 {%- if server.ssl.enabled and server.replication.role in ['master', 'slave', 'both', 'none'] %}
-old_passwords = 1
+#old_passwords = 1 
+#old_passwords param is deprecated in MySQL 5.7 and currently only accepts values 0 or 2
 ssl-ca=/etc/mysql/cacert.pem
 ssl-cert=/etc/mysql/server-cert.pem
 ssl-key=/etc/mysql/server-key.pem

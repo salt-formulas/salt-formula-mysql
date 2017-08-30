@@ -21,7 +21,7 @@ include:
 
 /etc/mysql/server-key.pem:
   file.managed:
-  {%- if server.ssl.cert is defined %}
+  {%- if server.ssl.key is defined %}
   - contents_pillar: mysql:server:ssl:key
   {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.certificate }}.key.pem
@@ -83,7 +83,7 @@ include:
   - connection_user: {{ mysql_connection_args.user }}
   - connection_pass: {{ mysql_connection_args.password }}
   - connection_charset: {{ mysql_connection_args.charset }}
-  - watch_in:
+  - watch:
     - service: mysql_service
 
 {{ server.replication.user }}_replication_grants:
@@ -95,7 +95,7 @@ include:
   - connection_user: {{ mysql_connection_args.user }}
   - connection_pass: {{ mysql_connection_args.password }}
   - connection_charset: {{ mysql_connection_args.charset }}
-  - watch_in:
+  - watch:
     - service: mysql_service
 
 {%- endif %}
