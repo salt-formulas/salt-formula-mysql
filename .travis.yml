@@ -17,16 +17,16 @@ install:
   - bundle install
 
 env:
-  - PLATFORM=trevorj/salty-whales:trusty SUITE=replication_both MYSQL_VER=5.5
-  - PLATFORM=trevorj/salty-whales:xenial SUITE=replication_both MYSQL_VER=5.7
-  - PLATFORM=trevorj/salty-whales:trusty SUITE=replication_master MYSQL_VER=5.5
-  - PLATFORM=trevorj/salty-whales:xenial SUITE=replication_master MYSQL_VER=5.7
-  - PLATFORM=trevorj/salty-whales:trusty SUITE=replication_slave MYSQL_VER=5.5
-  - PLATFORM=trevorj/salty-whales:xenial SUITE=replication_slave MYSQL_VER=5.7
-  - PLATFORM=trevorj/salty-whales:trusty SUITE=server_client_database MYSQL_VER=5.5
-  - PLATFORM=trevorj/salty-whales:xenial SUITE=server_client_database MYSQL_VER=5.7
-  - PLATFORM=trevorj/salty-whales:trusty SUITE=server_client_user MYSQL_VER=5.5
-  - PLATFORM=trevorj/salty-whales:xenial SUITE=server_client_user MYSQL_VER=5.7
+  - PLATFORM=trevorj/salty-whales:trusty SUITE=replication-both MYSQL_VER=5.5
+  - PLATFORM=trevorj/salty-whales:xenial SUITE=replication-both MYSQL_VER=5.7
+  - PLATFORM=trevorj/salty-whales:trusty SUITE=replication-master MYSQL_VER=5.5
+  - PLATFORM=trevorj/salty-whales:xenial SUITE=replication-master MYSQL_VER=5.7
+  - PLATFORM=trevorj/salty-whales:trusty SUITE=replication-slave MYSQL_VER=5.5
+  - PLATFORM=trevorj/salty-whales:xenial SUITE=replication-slave MYSQL_VER=5.7
+  - PLATFORM=trevorj/salty-whales:trusty SUITE=server-client-database MYSQL_VER=5.5
+  - PLATFORM=trevorj/salty-whales:xenial SUITE=server-client-database MYSQL_VER=5.7
+  - PLATFORM=trevorj/salty-whales:trusty SUITE=server-client-user MYSQL_VER=5.5
+  - PLATFORM=trevorj/salty-whales:xenial SUITE=server-client-user MYSQL_VER=5.7
 
 before_script:
   - set -o pipefail
