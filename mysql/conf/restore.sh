@@ -9,7 +9,7 @@
 
 {%- if database.initial_data.source != 'localhost' %}
 
-scp backupninja@{{ database.initial_data.source }}:/srv/backupninja/{{ host }}{{ path }}mysql.{{ age }}/sqldump/{{ source_name }} /root/mysql/data/{{ source_name }}
+scp backupninja@{{ database.initial_data.source }}:{{ backup_dir }}/{{ host }}{{ path }}mysql.{{ age }}/sqldump/{{ source_name }} /root/mysql/data/{{ source_name }}
 
 gunzip -c /root/mysql/data/{{ source_name }} | mysql -u{{ database.users[0].name }} -p{{ database.users[0].password }} {{ database_name }}
 

@@ -77,6 +77,7 @@ mysql_{{ server_name }}_grants_{{ database_name }}_{{ user.name }}_{{ user.host 
   - defaults:
     database_name: {{ database_name }}
     database: {{ database }}
+    backup_dir: {{ client.backup_dir }}
   - require:
     - mysql_database: mysql_{{ server_name }}_database_{{ database_name }}
 
