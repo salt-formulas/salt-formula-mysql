@@ -2,4 +2,5 @@ backup:
   mysql:
     fs_includes:
     - /var/backups/mysql
-    fs_excludes: []
+    fs_excludes:
+    - xtrabackup
