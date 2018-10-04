@@ -29,7 +29,11 @@ mysql_user_{{ user.name }}_{{ database_name }}_{{ user.host }}:
 mysql_grants_{{ user.name }}_{{ database_name }}_{{ user.host }}:
   mysql_grants.present:
   - grant: {{ user.rights }}
+  {%- if user.target is defined %}
+  - database: '{{ user.target }}'
+  {%- else %}
   - database: '{{ database_name }}.*'
+  {%- endif %}
   - user: '{{ user.name }}'
   - host: '{{ user.host }}'
   - connection_user: {{ mysql_connection_args.user }}

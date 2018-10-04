@@ -36,6 +36,7 @@ Standalone MySQL server
               password: 'password'
               host: 'localhost'
               rights: 'all privileges'
+              target: '*.*'
 
 
 MySQL replication master with SSL

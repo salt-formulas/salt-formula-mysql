@@ -18,6 +18,7 @@ mysql:
           password: password
           host: '%'
           rights: all
+          target: 'nova.*'
         - name: nova
           password: password
           host: 127.0.0.1
