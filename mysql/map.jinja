@@ -8,10 +8,15 @@
         'config': '/etc/mysql/my.cnf',
         'maintenance_password': '5Pg91H1flC4HSVns',
         'replication': {
-           'role': 'none',
+            'role': 'none',
         },
         'ssl': {
-          'enabled': False
+            'enabled': False,
+            'ca_file': '/etc/mysql/cacert.pem',
+            'cert_file': '/etc/mysql/server-cert.pem',
+            'key_file': '/etc/mysql/server-key.pem',
+            'client_cert_file': '/etc/mysql/client-cert.pem',
+            'client_key_file': '/etc/mysql/client-key.pem'
         }
     },
     'RedHat': {
@@ -19,10 +24,15 @@
         'service': 'mysqld',
         'config': '/etc/my.cnf',
         'replication': {
-           'role': 'none',
+            'role': 'none',
         },
         'ssl': {
-          'enabled': False
+            'enabled': False,
+            'ca_file': '/etc/mysql/cacert.pem',
+            'cert_file': '/etc/mysql/server-cert.pem',
+            'key_file': '/etc/mysql/server-key.pem',
+            'client_cert_file': '/etc/mysql/client-cert.pem',
+            'client_key_file': '/etc/mysql/client-key.pem'
         }
     },
 }, merge=salt['pillar.get']('mysql:server')) %}

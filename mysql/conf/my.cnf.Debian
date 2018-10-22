@@ -28,9 +28,21 @@ default-character-set=utf8
 {%- endif %}
 
 {%- if server.ssl.enabled and server.replication.role in ['slave'] %}
-ssl-ca=/etc/mysql/cacert.pem
-ssl-cert=/etc/mysql/client-cert.pem
-ssl-key=/etc/mysql/client-key.pem
+  {%- if server.ssl.tls_version is defined %}
+tls_version={{ server.ssl.tls_version }}
+  {%- endif %}
+  {%- if server.ssl.ciphers is defined %}
+    {%- set _ciphers = [] %}
+    {%- for cipher_name, cipher in server.ssl.get('ciphers', {}).iteritems() %}
+      {%- if cipher.get('enabled', False) %}
+        {%- do _ciphers.append(cipher.get('name', cipher_name)) %}
+      {%- endif %}
+    {%- endfor %}
+ssl_cipher={{ ':'.join(_ciphers) }}
+  {%- endif %}
+ssl-ca={{ server.ssl.ca_file }}
+ssl-cert={{ server.ssl.client_cert_file }}
+ssl-key={{ server.ssl.client_key_file }}
 {%- endif %}
 
 # Here is entries for some specific programs
@@ -144,11 +156,21 @@ max_binlog_size         = 100M
 #
 
 {%- if server.ssl.enabled and server.replication.role in ['master', 'slave', 'both', 'none'] %}
-#old_passwords = 1 
-#old_passwords param is deprecated in MySQL 5.7 and currently only accepts values 0 or 2
-ssl-ca=/etc/mysql/cacert.pem
-ssl-cert=/etc/mysql/server-cert.pem
-ssl-key=/etc/mysql/server-key.pem
+  {%- if server.ssl.tls_version is defined %}
+tls_version={{ server.ssl.tls_version }}
+  {%- endif %}
+  {%- if server.ssl.ciphers is defined %}
+    {%- set _ciphers = [] %}
+    {%- for cipher_name, cipher in server.ssl.get('ciphers', {}).iteritems() %}
+      {%- if cipher.get('enabled', False) %}
+        {%- do _ciphers.append(cipher.get('name', cipher_name)) %}
+      {%- endif %}
+    {%- endfor %}
+ssl_cipher={{ ':'.join(_ciphers) }}
+  {%- endif %}
+ssl-ca={{ server.ssl.ca_file }}
+ssl-cert={{ server.ssl.cert_file }}
+ssl-key={{ server.ssl.key_file }}
 {%- endif %}
 
 [mysqldump]
