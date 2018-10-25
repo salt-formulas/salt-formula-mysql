@@ -14,6 +14,7 @@ include:
   {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.certificate }}.cert.pem
   {%- endif %}
+  - mode: 644
   - require:
     - pkg: mysql_packages
   - watch_in:
@@ -26,6 +27,8 @@ include:
   {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.certificate }}.key.pem
   {%- endif %}
+  - user: mysql
+  - mode: 400
   - require:
     - pkg: mysql_packages
   - watch_in:
@@ -40,6 +43,7 @@ include:
   {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.client_certificate }}.cert.pem
   {%- endif %}
+  - mode: 644
   - require:
     - pkg: mysql_packages
   - watch_in:
@@ -52,6 +56,8 @@ include:
   {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/certs/{{ server.ssl.client_certificate }}.key.pem
   {%- endif %}
+  - user: mysql
+  - mode: 400
   - require:
     - pkg: mysql_packages
   - watch_in:
@@ -66,6 +72,7 @@ include:
   {%- else %}
   - source: salt://pki/{{ server.ssl.authority }}/{{ server.ssl.authority }}-chain.cert.pem
   {%- endif %}
+  - mode: 644
   - require:
     - pkg: mysql_packages
   - watch_in:
