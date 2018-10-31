@@ -10,6 +10,20 @@ mysql:
     server_id: 1
     ssl:
       enabled: true
+      tls_version: TLSv1.1,TLSv1.2
+      ciphers:
+        DHE-RSA-AES128-SHA:
+          enabled: True
+        DHE-RSA-AES256-SHA:
+          name: DHE-RSA-AES256-SHA
+          enabled: True
+        EDH-RSA-DES-CBC3-SHA:
+          name: EDH-RSA-DES-CBC3-SHA
+          enabled: True
+        AES128-SHA:AES256-SHA:
+          enabled: True
+        DES-CBC3-SHA:
+          enabled: True
       cert: |
         -----BEGIN CERTIFICATE-----
         MIIB6TCCAZOgAwIBAgIJAIfmjJydRX+GMA0GCSqGSIb3DQEBCwUAMFAxCzAJBgNV
@@ -35,7 +49,6 @@ mysql:
         e+eSnl4fGzaEpz6zjykWEo1lmd+jzQIgL740kEr8J+Q1ppNDJBtbZnc7yp+P/DKL
         wo20+sNoyFU=
         -----END PRIVATE KEY-----
-
       client_cert: |
         -----BEGIN CERTIFICATE-----
         MIIB6TCCAZOgAwIBAgIJAMOZDw2vHe+UMA0GCSqGSIb3DQEBCwUAMFAxCzAJBgNV
@@ -50,7 +63,6 @@ mysql:
         a4m6eSuk5emcw7igaV3UtydA6tduMvjL3zNcbI58on5YV7xgBTPXqDjq4QvAw06P
         /PWEXbl2jaCHaX06wA==
         -----END CERTIFICATE-----
-
       client_key: |
         -----BEGIN PRIVATE KEY-----
         MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA+vIlx8Na0A1lxZnR
@@ -62,7 +74,6 @@ mysql:
         cP4Ho485thB2/m1s19t9wpddcojB4iUCIBJ1hIyrfWFAh8ktK9mNolMPR50+4eZk
         nTe8UvFB7ZIB
         -----END PRIVATE KEY-----
-
       cacert: |
         -----BEGIN CERTIFICATE-----
         MIIB6TCCAZOgAwIBAgIJAOqENcDHki1ZMA0GCSqGSIb3DQEBCwUAMFAxCzAJBgNV

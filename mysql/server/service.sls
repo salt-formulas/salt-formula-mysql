@@ -7,8 +7,10 @@ include:
 
 {%- if server.ssl.enabled %}
 
-/etc/mysql/server-cert.pem:
+{%- if server.ssl.certificate is defined %}
+mysql_server_cert:
   file.managed:
+  - name: {{ server.ssl.cert_file }}
   {%- if server.ssl.cert is defined %}
   - contents_pillar: mysql:server:ssl:cert
   {%- else %}
@@ -19,9 +21,12 @@ include:
     - pkg: mysql_packages
   - watch_in:
     - service: mysql_service
+{%- endif %}
 
-/etc/mysql/server-key.pem:
+{%- if server.ssl.certificate is defined %}
+mysql_server_key:
   file.managed:
+  - name: {{ server.ssl.key_file }}
   {%- if server.ssl.key is defined %}
   - contents_pillar: mysql:server:ssl:key
   {%- else %}
@@ -33,11 +38,14 @@ include:
     - pkg: mysql_packages
   - watch_in:
     - service: mysql_service
+{%- endif %}
 
 {%- if server.replication.role in ['slave', 'both'] %}
 
-/etc/mysql/client-cert.pem:
+{%- if server.ssl.client_certificate is defined %}
+mysql_client_cert:
   file.managed:
+  - name: {{ server.ssl.client_cert_file }}
   {%- if server.ssl.client_cert is defined %}
   - contents_pillar: mysql:server:ssl:client_cert
   {%- else %}
@@ -48,9 +56,12 @@ include:
     - pkg: mysql_packages
   - watch_in:
     - service: mysql_service
+{%- endif %}
 
-/etc/mysql/client-key.pem:
+{%- if server.ssl.client_certificate is defined %}
+mysql_client_key:
   file.managed:
+  - name: {{ server.ssl.client_key_file }}
   {%- if server.ssl.client_key is defined %}
   - contents_pillar: mysql:server:ssl:client_key
   {%- else %}
@@ -62,11 +73,14 @@ include:
     - pkg: mysql_packages
   - watch_in:
     - service: mysql_service
+{%- endif %}
 
 {%- endif %}
 
-/etc/mysql/cacert.pem:
+{%- if server.ssl.authority is defined %}
+mysql_ca_file:
   file.managed:
+  - name: {{ server.ssl.ca_file }}
   {%- if server.ssl.cacert is defined %}
   - contents_pillar: mysql:server:ssl:cacert
   {%- else %}
@@ -77,6 +91,7 @@ include:
     - pkg: mysql_packages
   - watch_in:
     - service: mysql_service
+{%- endif %}
 
 {%- endif %}
 
